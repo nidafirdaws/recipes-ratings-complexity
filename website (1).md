@@ -37,8 +37,8 @@ We noticed that recipes taking more than five hours are less than 5% of the data
 
 <iframe
   src="assets/recipes-hours.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -46,8 +46,8 @@ In addition, we plotted the distribution of `n_steps` to investigate how many st
 
 <iframe
   src="assets/steps-distribution.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -56,8 +56,8 @@ We also investigate the relationship between categories of `rating` and the time
 
 <iframe
   src="assets/cooking-time-by-rating.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -66,8 +66,8 @@ We plotted the distribution of the number of steps across different groups of mi
 
 <iframe
   src="assets/distribution_of_steps_across_minute_groups.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -109,8 +109,8 @@ The p-value of the missigness of rating by minutes is 0.115. At an alpha level o
 
 <iframe
   src="assets/minutes-missing.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -129,8 +129,8 @@ Our resulting p-value after performing a permutation test is 0.0. Therefore, at 
 
 <iframe
   src="assets/n-steps-missing.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -164,8 +164,8 @@ In the design of our baseline model features, we observed the pairwise correlati
 
 <iframe
   src="assets/correlation_matrix_heatmap.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -190,12 +190,12 @@ We added two new transformed features and changed our model selection. We decide
 
 <iframe
   src="assets/kde_plots.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
-As seen in this graph, the distributions of `n_steps` for recipes without the `easy` tag and recipes with the `easy` tag has a significant difference. We can see that the recipes without the `easy` tag tend to have more steps on average. We can infer this is because users are less likely to tag recipes with a high number of steps as `easy`. 
+As seen in this graph, the distributions of `n_steps` for recipes without the `easy` tag and recipes with the `easy` tag has a significant difference. We can see that the recipes without the `easy` tag tend to have more steps on average. We can infer this is because users are less likely to tag recipes with a high number of steps as `easy`, since those recipes should require less effort.
 
 Secondly, we changed our model selection to `DecisionTreeRegressor` because we believed that there are a lot of nonlinear relationships between `n_steps` and the multicollinearity of other features in the dataset. `DecisionTreeRegressor` works well with data that contains many outliers, and we believe that the specificity of data on recipes published on a food website can only increase as more and more recipes are added, so we need a model that can appropriately make decisions on where the data is similar and where it is not. `DecisionTreeRegressor` also makes decisions based on feature importance and the interactions between features themselves, which is something we wanted because we know that many of these features have linear relationships with each other, like the nutritional values. 
 
@@ -204,22 +204,44 @@ We aimed to tune the hyperparameter `max_depth` because we wanted to prevent ove
 
 <iframe
   src="assets/max_depth_vs_R2_plot.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
 <iframe
   src="assets/max_depth_vs_RMSE_plot.html"
-  width="200"
-  height="300"
+  width="400"
+  height="400"
   frameborder="0"
 ></iframe>
 
-As seen above, `max_depth` is optimally 30, since the RMSE and r^2 values plateau at this point and do not increase by a significant amount. We therefore take max_depth = 30 as our lower bound for the `DecisionTreeRegressor` in our model.
+As seen above, `max_depth` is optimally 30, since the RMSE and r^2 values plateau at this point and do not increase by a significant amount. We therefore take max_depth = 30 as our lower bound for the `DecisionTreeRegressor` in our model. 
+
+After running our model with this new hyperparameter and transformed features, we observed our r^2 value for the test set jumped to 63% and our RMSE value decreased to 3.84 units. We believe this is a big improvement from our baseline model, which was relying on simple linear relationships to make predictions on `n_steps`. We wanted to use `max_features` as a hyperparameter as well, but ultimately decided against it because we observed that this was overfitting for our model, and it did not make sense to limit our `DecisionTreeRegressor` to a certain number of features when we were already operating on a small subset of the available features in our dataset. The lower RMSE certainly means that our final model performed better because the distance between the actual target variables and response variables was minimized.
+
+The high variances in quantitative values made us less confident about using very specifically transformed features, because in investigating the relationships between each of these variables we were unable to find specific relationships such as linear, root, or exponential trends. Ultimately, we stuck to simpler transformations to try to predict our `n_steps` response variable so that we could attempt to generalize as best as possible. 
 
 
-Fairness Analysis
+## Fairness Analysis
+For our fairness, analysis, we chose to investigate recipes with fewer than 10 ingredients and recipes with more than 
+
+Group X: Recipes with fewer than 10 ingredients (few_ingredients = 1).
+Group Y: Recipes with 10 or more ingredients (few_ingredients = 0).
+
+Evaluation Metric : Root Mean Squared Error (RMSE) of the prediction for the number of steps.
+
+Null Hypothesis (H<sub>0</sub>) : There is no significant difference in the RMSE between recipes with fewer than 10 ingredients and recipes with 10 or more ingredients. The model is fair for these groups.
+
+Alternative Hypothesis (H<sub>a</sub>) : There is a significant difference in the RMSE between recipes with fewer than 10 ingredients and recipes with 10 or more ingredients. The model is not fair for these groups.
+
+Choice of Test Statistic : We are computing the difference in RMSE between the two groups.
+
+Significance Level : We will use a significance level of 0.05.
+
+Resulting p-value : The resulting p-value from the permutation test is 0.0.
+This means that the observed difference in RMSE between recipes with fewer than 10 ingredients and recipes with 10 or more ingredients is not significant at the chosen significance level of 0.05. In other words, there is little statistically significant evidence to reject the null hypothesis, so we fail to reject. 
+
 
 
 
