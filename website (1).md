@@ -18,9 +18,9 @@ The columns relevant to our question are `nutrition` (corresponding breakdown of
 
 ## Data Cleaning and Exploratory Data Analysis
 
-In our preliminary data cleaning of `data`, we converted the `nutrition` column into individual columns correspondng to each value in `nutrition`: `calories (#)`, `total fat (PDV)`, `sugar (PDV)`, `sodium (PDV)`, `protein (PDV)`, `saturated fat (PDV)`, and `carbohydrates (PDV)`. Keeping in line with our question, we did this so that we can investigate the specific relationships of numerical nutritional values with other variables in the dataset. In addition, we dropped the duplicate column storing recipe ids after the merging of `recipes` and `interactions`. We did this because we did not want our dataset to have a column storing repetitive information. Finally, we replaced 0 ratings with NaN. We did this after investigating whether food.com hosted any reviews with 0 ratings. Upon closer inspection, we found that ratings of 0 are not possible, and simply mean the user never gave a numerical rating for that recipe. We replace these values with `NaN` because they do not actually represennt a low rating, simply ratings that are missing. We also added a column `average_rating`, which indicated the average rating for the recipe reviewed. We did this so we could better understand characteristics of recipes that rated highly. 
+In our preliminary data cleaning of `data`, we converted the `nutrition` column into individual columns correspondng to each value in `nutrition`: `calories (#)`, `total fat (PDV)`, `sugar (PDV)`, `sodium (PDV)`, `protein (PDV)`, `saturated fat (PDV)`, and `carbohydrates (PDV)`. Keeping in line with our question, we did this so that we can investigate the specific relationships of numerical nutritional values with other variables in the dataset. In addition, we dropped the duplicate column storing recipe ids after the merging of `recipes` and `interactions`. We did this because we did not want our dataset to have a column storing repetitive information. Finally, we replaced 0 ratings with NaN. We did this after investigating whether food.com hosted any reviews with 0 ratings. Upon closer inspection, we found that ratings of 0 are not possible, and simply mean the user never gave a numerical rating for that recipe. We replace these values with `NaN` because they do not actually represent a low rating, simply ratings that are missing. We also added a column `average_rating`, which indicated the average rating for the recipe reviewed. We did this so we could better understand characteristics of recipes that rated highly. 
 
-The `ingredients` and `tags`  columns are originally list-looking strings. Although we acknowledge this, we keep the string version for easier use when playing with the distributions of descriptors for recipes with specific ingredients, like chocolate. However, we convert `date` to a `Timestamp` object for the option to use dates reviews were uploaded to understand its relationship with `n_steps` and `rating` when formulating our baseline model. 
+The `ingredients` and `tags`  columns are originally list-like strings. Although we acknowledge this, we keep the string version for easier use when playing with the distributions of descriptors for recipes with specific ingredients, like chocolate. However, we convert `date` to a `Timestamp` object for the option to use dates reviews were uploaded to understand its relationship with `n_steps` and `rating` when formulating our baseline model. 
 
 Here are the first five rows of relevant columns in our cleaned dataframe: 
 
@@ -33,7 +33,7 @@ Here are the first five rows of relevant columns in our cleaned dataframe:
 |  4 |      306168 | 412 broccoli casserole               |        5 |          194.8 |                20 |             6 |              22 |                     3 |               9 |
 
 
-We noticed that recipes taking more than five hours are less than 5% of the data and those taking more than a day are around 0.07% of our data. So, we chose to examine the distributions of recipes under five hours and under day. In the below graph, we observe that the recipes taking under five hours have a strong right skew, with most recipes under five horus taking 30-40 minutes on average. 
+We noticed that recipes taking more than five hours are less than 5% of the data and those taking more than a day are around 0.07% of our data. So, we chose to examine the distributions of recipes under five hours and under day. In the below graph, we observe that the recipes taking under five hours have a strong right skew, with most recipes under five hours taking 30-40 minutes on average. 
 
 <iframe
   src="assets/recipes-hours.html"
@@ -63,6 +63,14 @@ We also investigate the relationship between categories of `rating` and the time
 
 
 We plotted the distribution of the number of steps across different groups of minutes, observing that the IQR for quick, medium, and long recipes tends to increase as the number of steps increases. This was particularly interesting to us as we thought it implied that recipes that take longer intuitively have more steps to follow. This realization is what barred us from using `minutes` as a feature in our model's prediction problem, since we would not necessarily have access to a variable that can directly be associated with more steps in a recipe. 
+
+<iframe
+  src="assets/distribution_of_steps_across_minute_groups.html"
+  width="200"
+  height="300"
+  frameborder="0"
+></iframe>
+
 
 We aggregated by `rating` for each recipe and created a table showing the counts of each 
 rating category for each recipe. In randomly sampling from this table, we observe that most recipes tend to be concentrated in either 4 or 5 stars, with few having at least 1 rating in every category. We infer this may be due to the fact that users feeling strongly about a recipe tend to feel reviews, while fewer users will take the time to leave a rating if they feel the recipe is subpar.
