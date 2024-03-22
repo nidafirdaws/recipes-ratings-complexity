@@ -37,8 +37,8 @@ We noticed that recipes taking more than five hours are less than 5% of the data
 
 <iframe
   src="assets/recipes-hours.html"
-  width="400"
-  height="400"
+  width="600"
+  height="700"
   frameborder="0"
 ></iframe>
 
@@ -46,8 +46,8 @@ In addition, we plotted the distribution of `n_steps` to investigate how many st
 
 <iframe
   src="assets/steps-distribution.html"
-  width="400"
-  height="400"
+  width="600"
+  height="700"
   frameborder="0"
 ></iframe>
 
@@ -56,8 +56,8 @@ We also investigate the relationship between categories of `rating` and the time
 
 <iframe
   src="assets/cooking-time-by-rating.html"
-  width="400"
-  height="400"
+  width="600"
+  height="700"
   frameborder="0"
 ></iframe>
 
@@ -66,8 +66,8 @@ We plotted the distribution of the number of steps across different groups of mi
 
 <iframe
   src="assets/distribution_of_steps_across_minute_groups.html"
-  width="400"
-  height="400"
+  width="600"
+  height="700"
   frameborder="0"
 ></iframe>
 
@@ -108,7 +108,7 @@ The p-value of the missigness of rating by minutes is 0.115. At an alpha level o
 
 
 <iframe
-  src="assets/minutes-missing.html"
+  src="assets/minutes_missing.html"
   width="400"
   height="400"
   frameborder="0"
