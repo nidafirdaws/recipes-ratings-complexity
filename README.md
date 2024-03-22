@@ -37,8 +37,8 @@ We noticed that recipes taking more than five hours are less than 5% of the data
 
 <iframe
   src="assets/recipes-hours.html"
-  width="600"
-  height="700"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -46,7 +46,7 @@ In addition, we plotted the distribution of `n_steps` to investigate how many st
 
 <iframe
   src="assets/steps-distribution.html"
-  width="600"
+  width="800"
   height="700"
   frameborder="0"
 ></iframe>
@@ -56,7 +56,7 @@ We also investigate the relationship between categories of `rating` and the time
 
 <iframe
   src="assets/cooking-time-by-rating.html"
-  width="600"
+  width="800"
   height="700"
   frameborder="0"
 ></iframe>
@@ -66,7 +66,7 @@ We plotted the distribution of the number of steps across different groups of mi
 
 <iframe
   src="assets/distribution_of_steps_across_minute_groups.html"
-  width="600"
+  width="800"
   height="700"
   frameborder="0"
 ></iframe>
@@ -109,8 +109,8 @@ The p-value of the missigness of rating by minutes is 0.115. At an alpha level o
 
 <iframe
   src="assets/minutes_missing.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -129,8 +129,8 @@ Our resulting p-value after performing a permutation test is 0.0. Therefore, at 
 
 <iframe
   src="assets/n-steps-missing.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -164,8 +164,8 @@ In the design of our baseline model features, we observed the pairwise correlati
 
 <iframe
   src="assets/correlation_matrix_heatmap.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -190,8 +190,8 @@ We added two new transformed features and changed our model selection. We decide
 
 <iframe
   src="assets/kde_plots.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -204,15 +204,15 @@ We aimed to tune the hyperparameter `max_depth` because we wanted to prevent ove
 
 <iframe
   src="assets/max_depth_vs_R2_plot.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
 <iframe
   src="assets/max_depth_vs_RMSE_plot.html"
-  width="400"
-  height="400"
+  width="800"
+  height="600"
   frameborder="0"
 ></iframe>
 
