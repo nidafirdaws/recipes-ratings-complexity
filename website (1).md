@@ -151,7 +151,14 @@ To begin, since we recognize that rows with missing ratings constitute only 6% o
 
 In the design of our baseline model features, we observed the pairwise correlation coefficients between all quantitative columns of our dataframe `data`. We naively observe that our target variable, `n_steps` has the highest correlation coefficients with `n_ingredients`, `calories (#)`, and `total fat (PDV)`. We also presume that there is some relationship between `n_steps` and `minutes` despite the correlation coefficient of 0.01, because we can infer that recipes that take longer (larger # of `minutes`) must take longer due to a combination of a large `n_steps` and other factors. In fact, we can see this relationship in our bivariate analysis above, in the figure `Distribution of Number of Steps Across Minute Groups`, where the third quartile of each minute group increases as we enter a bigger minute category.
 
-<INSERT CORRELATION GRAPH HERE> 
+<iframe
+  src="assets/correlation_matrix_heatmap.html"
+  width="200"
+  height="300"
+  frameborder="0"
+></iframe>
+
+In this graph we can see the numerical values of coefficients of determination between all quantitative column. There are quite a few high correlations between nutritional values, and `n_steps` has our selected features as its highest correlations as well.
 
 We also observed the variances across different quantitative columns that we want to use, seeing that `calories (#)`, `sugar (PDV)`, and so on are highly varied. The variances for these values is more than 10000 units each. We want to use `calories (#)` and `total fat (PDV)` as features because they have higher correlations with `n_steps`, but their high variances and very large convinced us to utilize `QuantileTransformer` on them both. This would ensure that our model remained robust to outliers and still preserve the distances between datapoints. We also selected `n_ingredients` as a feature because we saw that it had a fairly strong linear relationship with `n_steps` and also a low variance. 
 
@@ -169,8 +176,36 @@ In our final model, we introduced the feature `protein (PDV)` based on its corre
 
 We added two new transformed features and changed our model selection. We decided to add a boolean feature which shows whether the tags for a recipe contain the tag `easy` because we observed below that those recipes tend to have a higher number of steps on average. We also added `sugar (PDV` as a feature because we knew from our prior analysis that `sugar (PDV)` and `n_steps` have a higher correlation compared to other nutritional values. `sugar (PDV)` is also highly correlated with `calories (#)` at a correlation coefficient of   `sugar (PDV)` has an extremely high variance with quite a few outliers (we observed this after plotting the distributions of `sugar (PDV`. We wanted to preserve the relative distances between each datapoint and also make it robust to the outliers without having to outright remove them, so we used `QuantileTransformer` to transform `sugar (PDV)`.
 
+
+<iframe
+  src="assets/kde_plots.html"
+  width="200"
+  height="300"
+  frameborder="0"
+></iframe>
+
+As seen in this graph, the distributions of `n_steps` for recipes without the `easy` tag and recipes with the `easy` tag has a significant difference. We can see that the recipes without the `easy` tag tend to have more steps on average. We can infer this is because users are less likely to tag recipes with a high number of steps as `easy`. 
+
 Secondly, we changed our model selection to `DecisionTreeRegressor` because we believed that there are a lot of nonlinear relationships between `n_steps` and the multicollinearity of other features in the dataset. `DecisionTreeRegressor` works well with data that contains many outliers, and we believe that the specificity of data on recipes published on a food website can only increase as more and more recipes are added, so we need a model that can appropriately make decisions on where the data is similar and where it is not. `DecisionTreeRegressor` also makes decisions based on feature importance and the interactions between features themselves, which is something we wanted because we know that many of these features have linear relationships with each other, like the nutritional values. 
 
+We aimed to tune the hyperparameter `max_depth` because we wanted to prevent overfitting with a `DecisionTreeRegressor` that creates too many splits on very specific sections of our features. The `max_depth` parameter limits the depth of the `DecisionTreeRegressor` during training, so that it can decide how much to grow the tree while splitting into sections of features that are related to each other. We run a simple loop checking to see what values of `max_depth` optimally plateaus with respect to our RMSE and r^2 value. We utilized a simple loop to achieve this and then plotted the changes of RMSE and r^2 as the max_depth increased, as seen below: 
+
+
+<iframe
+  src="assets/max_depth_vs_R2_plot.html"
+  width="200"
+  height="300"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/max_depth_vs_RMSE_plot.html"
+  width="200"
+  height="300"
+  frameborder="0"
+></iframe>
+
+As seen above, `max_depth` is optimally 30, since the RMSE and r^2 values plateau at this point and do not increase by a significant amount. We therefore take max_depth = 30 as our lower bound for the `DecisionTreeRegressor` in our model.
 
 
 Fairness Analysis
