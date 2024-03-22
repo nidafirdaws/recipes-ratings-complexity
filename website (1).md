@@ -42,8 +42,7 @@ We noticed that recipes taking more than five hours are less than 5% of the data
   frameborder="0"
 ></iframe>
 
-We plotted the distribution of `n_steps` to investigate how many ingredients recipes posted on food.com tend to have compared to different cooking times. This distribution seems fairly normal with a slight right skew, and we observe that on average most recipes tend to have 5-10 ingredients. Recipes that take longer also seem to have a larger third quartile for number of steps, in ascending order. 
-
+In addition, we plotted the distribution of `n_steps` to investigate how many steps recipes posted on food.com tend to have. We observed that this graph has a right skew, with most recipes having between 10-15 steps on average.
 
 <iframe
   src="assets/steps-distribution.html"
@@ -54,12 +53,16 @@ We plotted the distribution of `n_steps` to investigate how many ingredients rec
 
 We also investigate the relationship between categories of `rating` and the time it takes to cook a recipe (`minutes`). We observed that the Interquartile Range for each rating category is roughly the same. We can also observe that 4 and 5 star rating recipes have the most number of `minutes` outliers.
 
+
 <iframe
   src="assets/cooking-time-by-rating.html"
   width="200"
   height="300"
   frameborder="0"
 ></iframe>
+
+
+We plotted the distribution of the number of steps across different groups of minutes, observing that the IQR for quick, medium, and long recipes tends to increase as the number of steps increases. This was particularly interesting to us as we thought it implied that recipes that take longer intuitively have more steps to follow. This realization is what barred us from using `minutes` as a feature in our model's prediction problem, since we would not necessarily have access to a variable that can directly be associated with more steps in a recipe. 
 
 We aggregated by `rating` for each recipe and created a table showing the counts of each 
 rating category for each recipe. In randomly sampling from this table, we observe that most recipes tend to be concentrated in either 4 or 5 stars, with few having at least 1 rating in every category. We infer this may be due to the fact that users feeling strongly about a recipe tend to feel reviews, while fewer users will take the time to leave a rating if they feel the recipe is subpar.
